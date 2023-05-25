@@ -1,4 +1,4 @@
-import {Base} from './Base.js';
+import { Base } from './Base.js';
 
 export class Optional extends Base {
   constructor(type, condition = true) {

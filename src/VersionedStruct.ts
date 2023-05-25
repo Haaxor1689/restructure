@@ -1,4 +1,4 @@
-import {Struct} from './Struct.js';
+import { Struct } from './Struct.js';
 
 const getPath = (object, pathArray) => {
   return pathArray.reduce((prevObj, key) => prevObj && prevObj[key], object);
@@ -28,7 +28,7 @@ export class VersionedStruct extends Struct {
     }
 
     const fields = this.versions[res.version];
-    if ((fields == null)) {
+    if (fields == null) {
       throw new Error(`Unknown version ${res.version}`);
     }
 
@@ -75,7 +75,7 @@ export class VersionedStruct extends Struct {
     }
 
     const fields = this.versions[val.version];
-    if ((fields == null)) {
+    if (fields == null) {
       throw new Error(`Unknown version ${val.version}`);
     }
 

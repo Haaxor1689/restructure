@@ -1,4 +1,4 @@
-import {Base} from './Base.js';
+import { Base } from './Base.js';
 import * as utils from './utils.js';
 
 export class Struct extends Base {
@@ -22,10 +22,10 @@ export class Struct extends Base {
 
     // define hidden properties
     Object.defineProperties(res, {
-      parent:         { value: parent },
-      _startOffset:   { value: stream.pos },
+      parent: { value: parent },
+      _startOffset: { value: stream.pos },
       _currentOffset: { value: 0, writable: true },
-      _length:        { value: length }
+      _length: { value: length }
     });
 
     return res;
@@ -51,11 +51,12 @@ export class Struct extends Base {
 
       res._currentOffset = stream.pos - res._startOffset;
     }
-
   }
 
   size(val, parent, includePointers = true) {
-    if (val == null) { val = {}; }
+    if (val == null) {
+      val = {};
+    }
     const ctx = {
       parent,
       val,

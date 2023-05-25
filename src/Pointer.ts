@@ -1,5 +1,5 @@
 import * as utils from './utils.js';
-import {Base} from './Base.js';
+import { Base } from './Base.js';
 
 export class Pointer extends Base {
   constructor(offsetType, type, options = {}) {
@@ -7,11 +7,21 @@ export class Pointer extends Base {
     this.offsetType = offsetType;
     this.type = type;
     this.options = options;
-    if (this.type === 'void') { this.type = null; }
-    if (this.options.type == null) { this.options.type = 'local'; }
-    if (this.options.allowNull == null) { this.options.allowNull = true; }
-    if (this.options.nullValue == null) { this.options.nullValue = 0; }
-    if (this.options.lazy == null) { this.options.lazy = false; }
+    if (this.type === 'void') {
+      this.type = null;
+    }
+    if (this.options.type == null) {
+      this.options.type = 'local';
+    }
+    if (this.options.allowNull == null) {
+      this.options.allowNull = true;
+    }
+    if (this.options.nullValue == null) {
+      this.options.nullValue = 0;
+    }
+    if (this.options.lazy == null) {
+      this.options.lazy = false;
+    }
     if (this.options.relativeTo) {
       if (typeof this.options.relativeTo !== 'function') {
         throw new Error('relativeTo option must be a function');
@@ -24,15 +34,21 @@ export class Pointer extends Base {
     const offset = this.offsetType.decode(stream, ctx);
 
     // handle NULL pointers
-    if ((offset === this.options.nullValue) && this.options.allowNull) {
+    if (offset === this.options.nullValue && this.options.allowNull) {
       return null;
     }
 
     let relative;
     switch (this.options.type) {
-      case 'local':     relative = ctx._startOffset; break;
-      case 'immediate': relative = stream.pos - this.offsetType.size(); break;
-      case 'parent':    relative = ctx.parent._startOffset; break;
+      case 'local':
+        relative = ctx._startOffset;
+        break;
+      case 'immediate':
+        relative = stream.pos - this.offsetType.size();
+        break;
+      case 'parent':
+        relative = ctx.parent._startOffset;
+        break;
       default:
         var c = ctx;
         while (c.parent) {
@@ -51,7 +67,9 @@ export class Pointer extends Base {
     if (this.type != null) {
       let val = null;
       const decodeValue = () => {
-        if (val != null) { return val; }
+        if (val != null) {
+          return val;
+        }
 
         const { pos } = stream;
         stream.pos = ptr;
@@ -64,7 +82,8 @@ export class Pointer extends Base {
       // This obviously only works when the pointer is contained by a Struct.
       if (this.options.lazy) {
         return new utils.PropertyDescriptor({
-          get: decodeValue});
+          get: decodeValue
+        });
       }
 
       return decodeValue();
@@ -76,7 +95,8 @@ export class Pointer extends Base {
   size(val, ctx) {
     const parent = ctx;
     switch (this.options.type) {
-      case 'local': case 'immediate':
+      case 'local':
+      case 'immediate':
         break;
       case 'parent':
         ctx = ctx.parent;
@@ -90,7 +110,7 @@ export class Pointer extends Base {
     let { type } = this;
     if (type == null) {
       if (!(val instanceof VoidPointer)) {
-        throw new Error("Must be a VoidPointer");
+        throw new Error('Must be a VoidPointer');
       }
 
       ({ type } = val);
@@ -109,7 +129,7 @@ export class Pointer extends Base {
   encode(stream, val, ctx) {
     let relative;
     const parent = ctx;
-    if ((val == null)) {
+    if (val == null) {
       this.offsetType.encode(stream, this.options.nullValue);
       return;
     }
@@ -141,7 +161,7 @@ export class Pointer extends Base {
     let { type } = this;
     if (type == null) {
       if (!(val instanceof VoidPointer)) {
-        throw new Error("Must be a VoidPointer");
+        throw new Error('Must be a VoidPointer');
       }
 
       ({ type } = val);
@@ -154,7 +174,7 @@ export class Pointer extends Base {
       parent
     });
 
-    return ctx.pointerOffset += type.size(val, parent);
+    return (ctx.pointerOffset += type.size(val, parent));
   }
 }
 

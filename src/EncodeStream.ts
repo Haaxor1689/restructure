@@ -1,4 +1,4 @@
-import {DecodeStream} from './DecodeStream.js';
+import { DecodeStream } from './DecodeStream.js';
 
 const textEncoder = new TextEncoder();
 const isBigEndian = new Uint8Array(new Uint16Array([0x1234]).buffer)[0] == 0x12;
@@ -6,7 +6,11 @@ const isBigEndian = new Uint8Array(new Uint16Array([0x1234]).buffer)[0] == 0x12;
 export class EncodeStream {
   constructor(buffer) {
     this.buffer = buffer;
-    this.view = new DataView(this.buffer.buffer, this.buffer.byteOffset, this.buffer.byteLength);
+    this.view = new DataView(
+      this.buffer.buffer,
+      this.buffer.byteOffset,
+      this.buffer.byteLength
+    );
     this.pos = 0;
   }
 
@@ -114,10 +118,11 @@ for (let key of Object.getOwnPropertyNames(DataView.prototype)) {
       type = 'Double';
     }
     let bytes = DecodeStream.TYPES[type];
-    EncodeStream.prototype['write' + type + (bytes === 1 ? '' : 'BE')] = function (value) {
-      this.view[key](this.pos, value, false);
-      this.pos += bytes;
-    };
+    EncodeStream.prototype['write' + type + (bytes === 1 ? '' : 'BE')] =
+      function (value) {
+        this.view[key](this.pos, value, false);
+        this.pos += bytes;
+      };
 
     if (bytes !== 1) {
       EncodeStream.prototype['write' + type + 'LE'] = function (value) {

@@ -1,5 +1,5 @@
-import {Array as ArrayT} from './Array.js';
-import {Number as NumberT} from './Number.js';
+import { Array as ArrayT } from './Array.js';
+import { Number as NumberT } from './Number.js';
 import * as utils from './utils.js';
 
 export class LazyArray extends ArrayT {
@@ -50,13 +50,13 @@ class LazyArrayValue {
   }
 
   get(index) {
-    if ((index < 0) || (index >= this.length)) {
+    if (index < 0 || index >= this.length) {
       return undefined;
     }
 
     if (this.items[index] == null) {
       const { pos } = this.stream;
-      this.stream.pos = this.base + (this.type.size(null, this.ctx) * index);
+      this.stream.pos = this.base + this.type.size(null, this.ctx) * index;
       this.items[index] = this.type.decode(this.stream, this.ctx);
       this.stream.pos = pos;
     }

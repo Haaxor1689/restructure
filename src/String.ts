@@ -1,5 +1,5 @@
-import {Base} from './Base.js';
-import {Number as NumberT} from './Number.js';
+import { Base } from './Base.js';
+import { Number as NumberT } from './Number.js';
 import * as utils from './utils.js';
 
 class StringT extends Base {
@@ -16,9 +16,9 @@ class StringT extends Base {
       length = utils.resolveLength(this.length, stream, parent);
     } else {
       let buffer;
-      ({buffer, length, pos} = stream);
+      ({ buffer, length, pos } = stream);
 
-      while ((pos < length) && (buffer[pos] !== 0x00)) {
+      while (pos < length && buffer[pos] !== 0x00) {
         ++pos;
       }
 
@@ -32,7 +32,7 @@ class StringT extends Base {
 
     const string = stream.readString(length, encoding);
 
-    if ((this.length == null) && (stream.pos < stream.length)) {
+    if (this.length == null && stream.pos < stream.length) {
       stream.pos++;
     }
 
@@ -47,7 +47,11 @@ class StringT extends Base {
 
     let { encoding } = this;
     if (typeof encoding === 'function') {
-      encoding = encoding.call(parent != null ? parent.val : undefined, parent != null ? parent.val : undefined) || 'ascii';
+      encoding =
+        encoding.call(
+          parent != null ? parent.val : undefined,
+          parent != null ? parent.val : undefined
+        ) || 'ascii';
     }
 
     if (encoding === 'utf16be') {
@@ -59,7 +63,7 @@ class StringT extends Base {
       size += this.length.size();
     }
 
-    if ((this.length == null)) {
+    if (this.length == null) {
       size++;
     }
 
@@ -69,7 +73,11 @@ class StringT extends Base {
   encode(stream, val, parent) {
     let { encoding } = this;
     if (typeof encoding === 'function') {
-      encoding = encoding.call(parent != null ? parent.val : undefined, parent != null ? parent.val : undefined) || 'ascii';
+      encoding =
+        encoding.call(
+          parent != null ? parent.val : undefined,
+          parent != null ? parent.val : undefined
+        ) || 'ascii';
     }
 
     if (this.length instanceof NumberT) {
@@ -78,7 +86,7 @@ class StringT extends Base {
 
     stream.writeString(val, encoding);
 
-    if ((this.length == null)) {
+    if (this.length == null) {
       return stream.writeUInt8(0x00);
     }
   }
@@ -125,4 +133,4 @@ function byteLength(string, encoding) {
   }
 }
 
-export {StringT as String};
+export { StringT as String };

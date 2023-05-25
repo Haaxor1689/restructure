@@ -1,19 +1,22 @@
-import {Base} from './Base.js';
-import {Number as NumberT} from './Number.js';
-import * as utils from './utils.js';
+import { Base } from './Base';
+import { DecodeStream } from './DecodeStream';
+import { Number as NumberT } from './Number';
+import * as utils from './utils';
 
-export class BufferT extends Base {
-  constructor(length) {
+export class BufferT extends Base<Buffer> {
+  length: Base<unknown>;
+
+  constructor(length: Base<unknown>) {
     super();
     this.length = length;
   }
-  
-  decode(stream, parent) {
+
+  decode(stream: DecodeStream, parent: unknown) {
     const length = utils.resolveLength(this.length, stream, parent);
     return stream.readBuffer(length);
   }
 
-  size(val, parent) {
+  size(val: Buffer, parent: unknown) {
     if (!val) {
       return utils.resolveLength(this.length, null, parent);
     }
@@ -35,4 +38,4 @@ export class BufferT extends Base {
   }
 }
 
-export {BufferT as Buffer};
+export { BufferT as Buffer };

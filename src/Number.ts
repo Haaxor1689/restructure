@@ -1,5 +1,5 @@
-import {DecodeStream} from './DecodeStream.js';
-import {Base} from './Base.js';
+import { DecodeStream } from './DecodeStream.js';
+import { Base } from './Base.js';
 
 class NumberT extends Base {
   constructor(type, endian = 'BE') {
@@ -25,7 +25,7 @@ class NumberT extends Base {
   }
 }
 
-export {NumberT as Number};
+export { NumberT as Number };
 
 export const uint8 = new NumberT('UInt8');
 export const uint16be = new NumberT('UInt16', 'BE');

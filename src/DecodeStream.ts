@@ -1,20 +1,29 @@
 // Node back-compat.
-const ENCODING_MAPPING = {
+const ENCODING_MAPPING: Record<string, string> = {
   utf16le: 'utf-16le',
   ucs2: 'utf-16le',
   utf16be: 'utf-16be'
-}
+};
 
 export class DecodeStream {
-  constructor(buffer) {
+  buffer: Buffer;
+  view: DataView;
+  pos: number;
+  length: number;
+
+  constructor(buffer: Buffer) {
     this.buffer = buffer;
-    this.view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+    this.view = new DataView(
+      buffer.buffer,
+      buffer.byteOffset,
+      buffer.byteLength
+    );
     this.pos = 0;
     this.length = this.buffer.length;
   }
 
-  readString(length, encoding = 'ascii') {
-    encoding = ENCODING_MAPPING[encoding] || encoding;
+  readString(length: number, encoding = 'ascii') {
+    encoding = ENCODING_MAPPING[encoding] ?? encoding;
 
     let buf = this.readBuffer(length);
     try {
@@ -25,7 +34,7 @@ export class DecodeStream {
     }
   }
 
-  readBuffer(length) {
+  readBuffer(length: number) {
     return this.buffer.slice(this.pos, (this.pos += length));
   }
 
@@ -68,11 +77,12 @@ for (let key of Object.getOwnPropertyNames(DataView.prototype)) {
       type = 'Double';
     }
     let bytes = DecodeStream.TYPES[type];
-    DecodeStream.prototype['read' + type + (bytes === 1 ? '' : 'BE')] = function () {
-      const ret = this.view[key](this.pos, false);
-      this.pos += bytes;
-      return ret;
-    };
+    DecodeStream.prototype['read' + type + (bytes === 1 ? '' : 'BE')] =
+      function () {
+        const ret = this.view[key](this.pos, false);
+        this.pos += bytes;
+        return ret;
+      };
 
     if (bytes !== 1) {
       DecodeStream.prototype['read' + type + 'LE'] = function () {

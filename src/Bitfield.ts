@@ -1,4 +1,4 @@
-import {Base} from './Base.js';
+import { Base } from './Base.js';
 
 export class Bitfield extends Base {
   constructor(type, flags = []) {
@@ -30,7 +30,9 @@ export class Bitfield extends Base {
     for (let i = 0; i < this.flags.length; i++) {
       const flag = this.flags[i];
       if (flag != null) {
-        if (keys[flag]) { val |= (1 << i); }
+        if (keys[flag]) {
+          val |= 1 << i;
+        }
       }
     }
 

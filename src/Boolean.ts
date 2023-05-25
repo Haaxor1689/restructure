@@ -1,4 +1,4 @@
-import {Base} from './Base.js';
+import { Base } from './Base.js';
 
 export class BooleanT extends Base {
   constructor(type) {
@@ -19,4 +19,4 @@ export class BooleanT extends Base {
   }
 }
 
-export {BooleanT as Boolean};
+export { BooleanT as Boolean };

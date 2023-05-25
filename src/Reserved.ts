@@ -1,4 +1,4 @@
-import {Base} from './Base.js';
+import { Base } from './Base.js';
 import * as utils from './utils.js';
 
 export class Reserved extends Base {

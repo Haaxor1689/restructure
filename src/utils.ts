@@ -1,16 +1,13 @@
-import {Number as NumberT} from './Number.js';
+import { Number as NumberT } from './Number.js';
 
 export function resolveLength(length, stream, parent) {
   let res;
   if (typeof length === 'number') {
     res = length;
-
   } else if (typeof length === 'function') {
     res = length.call(parent, parent);
-
-  } else if (parent && (typeof length === 'string')) {
+  } else if (parent && typeof length === 'string') {
     res = parent[length];
-
   } else if (stream && length instanceof NumberT) {
     res = length.decode(stream);
   }
@@ -20,7 +17,7 @@ export function resolveLength(length, stream, parent) {
   }
 
   return res;
-};
+}
 
 export class PropertyDescriptor {
   constructor(opts = {}) {
